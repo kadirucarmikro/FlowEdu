@@ -1,0 +1,17 @@
+# Screenshots Directory
+
+Bu klasör, proje dokümantasyonu için ekran görüntülerini içerir.
+
+## Klasör Yapısı
+```
+screenshots/
+  auth/
+  payments/
+  notifications/
+  members/
+  events/
+  ...
+```
+
+Her modül için alt klasör oluşturun ve ekran görüntülerini oraya kaydedin.
+

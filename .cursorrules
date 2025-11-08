@@ -1,0 +1,172 @@
+# FlowEdu Project Rules
+
+## Project Overview
+- **Project**: FlowEdu - Flutter Web + Mobile
+- **Architecture**: Clean Architecture
+- **State Management**: Riverpod
+- **Backend**: Supabase (PostgreSQL)
+- **Navigation**: GoRouter
+- **UI**: Responsive Design
+
+## Completed Modules (11/11 - 100%)
+✅ Roles (CRUD operations)
+✅ Groups (CRUD operations)
+✅ Screens (CRUD operations)
+✅ Permissions (Interactive Matrix UI)
+✅ Members (Personal info management)
+✅ Notifications (3 types: Automatic/Manual/Interactive)
+✅ Events (3 types: Normal/Interactive/Poll)
+✅ Payments (CRUD, discount system, package management, schedule integration)
+✅ About (CMS-like content management)
+✅ Lesson Schedules (Weekly schedules, package-based, member assignment)
+✅ Reports (Dashboard, filtering, reporting)
+
+## Architecture Rules
+
+### Clean Architecture Layers
+```
+lib/features/[module_name]/
+  data/
+    - data_sources/ (Supabase)
+    - models/ (DTO)
+    - repositories/ (Implementation)
+  domain/
+    - entities/ (Business Objects)
+    - repositories/ (Interfaces)
+    - use_cases/ (Business Logic)
+  presentation/
+    - pages/ (Screens)
+    - widgets/ (Components)
+    - providers/ (Riverpod)
+```
+
+### Riverpod State Management
+- Use FutureProvider for async data
+- Use Provider for use cases
+- Use StateNotifier for complex state
+- Always invalidate providers after mutations
+
+### Responsive Design - ALWAYS USE THESE WIDGETS
+- **NEVER manually create LayoutBuilder+GridView+ListView**
+- **ALWAYS use core/widgets/responsive_grid_list.dart**
+- Use ResponsiveGridList for simple lists
+- Use RefreshableResponsiveGridList for pull-to-refresh
+- Use AsyncResponsiveGridList for FutureProvider data
+- Automatic breakpoints: >1400px=4cols, >1000px=3cols, >700px=2cols, ≤600px=ListView
+
+### Navigation
+- Use GoRouter for navigation
+- Avoid Navigator.pop() conflicts
+- Use rootNavigator: true when needed
+- Handle dialog navigation properly
+
+### Dialog Management
+- Avoid PopupMenuButton conflicts
+- Use direct IconButton actions
+- Implement proper dialog closing
+- Use showDialog with proper context
+
+### Supabase Integration
+- Always implement RLS policies
+- Use proper error handling
+- Implement loading states
+- Handle authentication properly
+
+## Code Quality Rules
+
+### Naming Conventions
+- Use PascalCase for classes
+- Use camelCase for variables/functions
+- Use snake_case for file names
+- Use descriptive names
+
+### Error Handling
+- Always use try-catch blocks
+- Implement proper error messages
+- Use SnackBar for user feedback
+- Log errors appropriately
+
+### Performance
+- Use const constructors when possible
+- Implement proper loading states
+- Use efficient list builders
+- Optimize image loading
+
+## Module Development Rules
+
+### When creating new modules:
+1. Follow Clean Architecture structure
+2. Implement CRUD operations
+3. Add responsive design
+4. Implement proper error handling
+5. Add loading states
+6. Create proper navigation
+7. Implement RLS policies
+
+### When fixing issues:
+1. Identify root cause
+2. Implement proper solution
+3. Test thoroughly
+4. Update documentation
+5. Follow existing patterns
+
+## Specific Patterns
+
+### Card Pattern
+```dart
+class MyCard extends StatelessWidget {
+  // Use direct IconButton actions instead of PopupMenuButton
+  // Implement proper overflow handling with maxLines and TextOverflow.ellipsis
+  // Keep cards compact and responsive
+}
+```
+
+### Responsive Page Pattern - ALWAYS USE THIS
+```dart
+// ❌ NEVER DO THIS MANUALLY:
+// LayoutBuilder + GridView + ListView
+
+// ✅ ALWAYS USE THIS:
+AsyncResponsiveGridList(
+  asyncData: dataProvider,
+  onRefresh: () async => ref.invalidate(dataProvider),
+  itemBuilder: (context, item, index) => MyCard(item: item),
+  aspectRatio: 1.2, // Adjust per content type
+  maxColumns: 4,
+  emptyWidget: MyEmptyWidget(),
+)
+```
+
+### Dialog Pattern
+```dart
+void _showDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      // Proper dialog implementation
+    ),
+  );
+}
+```
+
+### New Page Checklist
+1. Import core/widgets/responsive_grid_list.dart
+2. Use AsyncResponsiveGridList for FutureProvider data
+3. Set appropriate aspectRatio (1.0-2.0)
+4. Set maxColumns (3-4 for most content)
+5. Create custom emptyWidget if needed
+
+## Next Steps
+- Optimize existing modules
+- Add advanced filtering and search
+- Implement reporting features
+- Performance optimization
+- Add unit and integration tests
+
+## Common Issues to Avoid
+- PopupMenuButton navigation conflicts
+- Dialog not closing after operations
+- Responsive layout overflow
+- RLS policy errors
+- State management issues
+- Navigation stack problems
