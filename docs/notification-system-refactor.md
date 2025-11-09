@@ -95,11 +95,12 @@ Notification sistemi, yeni hedefleme sistemi ile güncellenmiştir. Artık admin
 
 ## Migration Adımları
 
-1. **SQL Migration**: `docs/notification-system-refactor.sql` dosyasını çalıştır
-2. **Model Güncellemeleri**: Entity ve model sınıfları güncellendi
-3. **UI Güncellemeleri**: Form dialog'u güncellendi
-4. **Data Source**: Remote data source güncellendi
-5. **Test**: Yeni hedefleme sistemi test edilmeli
+1. **Model Güncellemeleri**: Entity ve model sınıfları güncellendi
+2. **UI Güncellemeleri**: Form dialog'u güncellendi
+3. **Data Source**: Remote data source güncellendi
+4. **Test**: Yeni hedefleme sistemi test edilmeli
+
+**Not**: Database değişiklikleri (yeni tablolar, view'lar) zaten `create-basic-tables.sql` ve ilgili RLS policy dosyalarında mevcuttur.
 
 ## Test Senaryoları
 
