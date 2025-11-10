@@ -1014,6 +1014,7 @@ class _MemberCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -1033,8 +1034,9 @@ class _MemberCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Expanded(
+                  Flexible(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
@@ -1120,7 +1122,7 @@ class _MemberCard extends StatelessWidget {
                   value:
                       '${member.createdDate!.day}/${member.createdDate!.month}/${member.createdDate!.year}',
                 ),
-              const Spacer(),
+              const SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(

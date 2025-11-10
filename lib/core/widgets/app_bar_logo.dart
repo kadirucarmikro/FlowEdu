@@ -11,27 +11,36 @@ class AppBarLogo extends StatelessWidget {
         onTap: () => Scaffold.of(context).openDrawer(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.school,
-                size: 24,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'FlowEdu',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          child: MediaQuery.of(context).size.width > 600
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.school,
+                      size: 24,
                       color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.bold,
                     ),
-              ),
-            ],
-          ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'FlowEdu',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                )
+              : Icon(
+                  Icons.school,
+                  size: 24,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
         ),
       ),
     );
   }
 }
-

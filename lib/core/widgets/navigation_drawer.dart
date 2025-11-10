@@ -16,7 +16,6 @@ class NavigationDrawer extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 140,
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -45,6 +44,7 @@ class NavigationDrawer extends StatelessWidget {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
