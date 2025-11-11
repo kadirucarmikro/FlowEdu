@@ -1,23 +1,25 @@
 # FlowEdu Veritabanı Seed İşlemi - Adım Adım Rehber
 
-Bu rehber, veritabanını sıfırdan doldurmak için izlemeniz gereken adımları açıklar.
+Bu rehber, veritabanını yapılandırmak ve test verileri eklemek için izlemeniz gereken adımları açıklar.
 
-## ✅ Tamamlanan Adımlar
+> ⚠️ **Not**: Development/test SQL script'leri (delete-all-data.sql, seed-sample-data.sql, seed-auth-users.sql) production için gerekli olmadığından kaldırılmıştır. Production için gerekli SQL dosyaları `docs/` klasöründe bulunmaktadır.
 
-1. ✅ **Tüm verileri silme** - `delete-all-data.sql` çalıştırıldı
-2. ✅ **Temel verileri ekleme** - `seed-sample-data.sql` çalıştırıldı
+## 📋 Veritabanı Kurulumu
 
-## 📋 Şimdi Yapılacaklar
+### Adım 1: Production SQL Script'lerini Çalıştır
 
-### Adım 3: Auth Users ve İlişkili Verileri Ekle
+Supabase SQL Editor'da aşağıdaki dosyaları sırayla çalıştırın:
 
-Bu adımda auth.users gerektiren veriler (members, admins, events, vb.) eklenecek.
+1. **`docs/create-basic-tables.sql`** - Temel tablolar, RLS politikaları ve fonksiyonlar
+2. **`docs/about-rls-policies.sql`** - About modülü RLS politikaları
+3. **`docs/lesson-schedules-rls-policies.sql`** - Lesson schedules RLS politikaları
+4. **`docs/payments-rls-policies.sql`** - Payments modülü RLS politikaları
 
-**⚠️ ÖNEMLİ:** Artık iki seçeneğiniz var:
-- **Seçenek A (Önerilen)**: SQL Script - Daha hızlı, Flutter bağımlılıkları gerektirmez
-- **Seçenek B**: Flutter Script - Alternatif yöntem
+### Adım 2: Test Verileri Ekle (Opsiyonel)
 
-#### 3.1. .env Dosyasını Kontrol Et
+Test verileri eklemek için Flutter script'ini kullanabilirsiniz:
+
+#### 2.1. .env Dosyasını Kontrol Et
 
 Proje kök dizininde `.env` dosyası olmalı. Eğer yoksa oluşturun:
 
@@ -39,16 +41,7 @@ SUPABASE_ANON_KEY=your-anon-key-here
 3. `Project URL` → `SUPABASE_URL` olarak kullanın
 4. `anon public` key → `SUPABASE_ANON_KEY` olarak kullanın
 
-#### 3.2. Verileri Ekleme - İki Seçenek
-
-**Seçenek A: SQL Script (Önerilen - Daha Hızlı)**
-
-1. Supabase Dashboard → SQL Editor'a gidin
-2. `docs/scripts/seed-auth-users.sql` dosyasını açın
-3. İçeriği kopyalayıp SQL Editor'a yapıştırın
-4. "Run" butonuna tıklayın
-
-**Seçenek B: Flutter Script (Alternatif)**
+#### 2.2. Flutter Script ile Test Verileri Ekle
 
 Terminal'de proje kök dizininde şu komutu çalıştırın:
 
@@ -114,11 +107,11 @@ dart run lib/scripts/seed_database.dart
 - Hata değildir, sadece bilgilendirme
 
 ### "Role not found" hatası
-- `seed-sample-data.sql` scriptinin çalıştırıldığından emin olun
+- `docs/create-basic-tables.sql` scriptinin çalıştırıldığından emin olun
 - Supabase'de `roles` tablosunda rollerin olduğunu kontrol edin
 
 ### "Group not found" hatası
-- `seed-sample-data.sql` scriptinin çalıştırıldığından emin olun
+- `docs/create-basic-tables.sql` scriptinin çalıştırıldığından emin olun
 - Supabase'de `groups` tablosunda grupların olduğunu kontrol edin
 
 ## ✅ Başarılı Tamamlandıktan Sonra

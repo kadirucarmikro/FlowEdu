@@ -4,49 +4,11 @@ Bu klasör, FlowEdu Tango Dans Okulu projesi için veritabanı yönetim scriptle
 
 > 📝 **Detaylı Kullanıcı Bilgileri**: Tüm test kullanıcılarının email, şifre ve detaylı bilgileri için `KULLANICI_BILGILERI.md` dosyasına bakın.
 
+> ⚠️ **Not**: Development/test SQL script'leri (delete-all-data.sql, seed-sample-data.sql, seed-auth-users.sql, fix-instructor-roles.sql) production için gerekli olmadığından kaldırılmıştır. Production için gerekli SQL dosyaları `docs/` klasöründe bulunmaktadır.
+
 ## Scriptler
 
-### 1. `delete-all-data.sql`
-Tüm tablolardaki verileri siler. Foreign key ilişkilerine göre sıralı silme işlemi yapar.
-
-**Kullanım:**
-1. Supabase Dashboard'a giriş yapın
-2. SQL Editor'ı açın
-3. Bu dosyanın içeriğini kopyalayıp yapıştırın
-4. "Run" butonuna tıklayın
-
-**⚠️ DİKKAT:** Bu script tüm verileri kalıcı olarak siler! Geri alınamaz!
-
-**Silinen Tablolar (Sırayla):**
-- Notification ilişkili: `notification_responses`, `notification_targets`, `scheduled_notifications`, `notification_options`
-- Event ilişkili: `event_responses`, `event_question_options`, `event_questions`, `event_media`, `event_instructors`, `event_organizers`, `event_options`
-- Lesson ilişkili: `lesson_attendees`, `lesson_schedules`
-- Payment ve assignment: `payments`, `member_package_assignments`, `cancelled_lessons`, `package_schedules`
-- Diğer: `permissions`, `notifications`, `automatic_notification_settings`, `events`, `about_contents`, `audit_logs`
-- Kullanıcılar: `members`, `admins`
-- Temel: `lesson_packages`, `rooms`, `screens`, `groups`, `roles`
-
-### 2. `seed-sample-data.sql`
-Tango dans okuluna uygun temel tablolara örnek veriler ekler.
-
-**Kullanım:**
-1. Önce `delete-all-data.sql` scriptini çalıştırın
-2. Supabase SQL Editor'da bu dosyanın içeriğini çalıştırın
-
-**Eklenen Veriler:**
-- **Roller:** Admin, SuperAdmin, Member, Instructor
-- **Gruplar:** 10 tango dans grubu (Başlangıç, Orta, İleri, Milonga, Vals, Pratik, Yarışma Hazırlık, vb.)
-- **Ekranlar:** 16 ekran (tüm proje ekranları route ve icon'larla)
-- **Yetkilendirmeler:** Her rol için uygun yetkiler
-- **Odalar:** 8 tango dans salonu (Ana Salon, Milonga Salonu, Pratik Salonları, vb.)
-- **Ders Paketleri:** 10 paket (4-24 ders arası, bireysel ve grup paketleri)
-- **Paket Programları:** Her paket için haftalık programlar
-- **Otomatik Bildirimler:** 5 farklı bildirim tipi
-- **Hakkımızda İçerikleri:** Tango dans okuluna özel detaylı içerikler
-
-**Not:** Bu script sadece auth.users gerektirmeyen tablolara veri ekler. Members, Admins gibi tablolar için Flutter scripti kullanılmalıdır.
-
-### 3. `lib/scripts/seed_database.dart`
+### `lib/scripts/seed_database.dart`
 Flutter tarafında çalışan seed scripti. Auth.users gerektiren verileri ekler.
 
 **Kullanım:**
@@ -68,35 +30,27 @@ dart run lib/scripts/seed_database.dart
 - **Ödemeler:** 15 ödeme kaydı (farklı paketler, farklı durumlar)
 - **Ders Programları:** Her paket için 4-6 ders programı
 
-## Tam Seed İşlemi (Sıralı Adımlar)
+## Veritabanı Kurulumu
 
-### Adım 1: Tüm Verileri Sil
-```sql
--- Supabase SQL Editor'da çalıştır
--- docs/scripts/delete-all-data.sql dosyasının içeriğini yapıştır ve çalıştır
-```
+### Production SQL Script'leri
 
-### Adım 2: Temel Verileri Ekle
-```sql
--- Supabase SQL Editor'da çalıştır
--- docs/scripts/seed-sample-data.sql dosyasının içeriğini yapıştır ve çalıştır
-```
+Production için gerekli SQL dosyaları `docs/` klasöründe bulunmaktadır:
 
-### Adım 3: Auth Users ve İlişkili Verileri Ekle
+1. **`docs/create-basic-tables.sql`** - Temel tablolar, RLS politikaları ve fonksiyonlar
+2. **`docs/about-rls-policies.sql`** - About modülü RLS politikaları
+3. **`docs/lesson-schedules-rls-policies.sql`** - Lesson schedules RLS politikaları
+4. **`docs/payments-rls-policies.sql`** - Payments modülü RLS politikaları
 
-**Seçenek A: SQL Script (Önerilen - Daha Hızlı)**
-```sql
--- Supabase SQL Editor'da çalıştır
--- docs/scripts/seed-auth-users.sql dosyasının içeriğini yapıştır ve çalıştır
-```
+Bu dosyaları Supabase SQL Editor'da sırayla çalıştırarak veritabanını yapılandırabilirsiniz.
 
-**Seçenek B: Flutter Script (Alternatif)**
+### Test Verileri Ekleme
+
+Test verileri eklemek için Flutter script'ini kullanabilirsiniz:
+
 ```bash
 # Terminal'de çalıştır
 dart run lib/scripts/seed_database.dart
 ```
-
-**Not:** SQL script daha hızlıdır ve Flutter bağımlılıkları gerektirmez. Ancak `auth.users` tablosuna doğrudan erişim gerektirir.
 
 ## Oluşturulan Örnek Veriler
 
@@ -209,20 +163,16 @@ Tüm proje ekranları route, icon ve açıklamalarla:
 
 ## Sorun Giderme
 
-### "Foreign key constraint" hatası
-- Scriptleri doğru sırayla çalıştırdığınızdan emin olun
-- Önce `delete-all-data.sql`, sonra `seed-sample-data.sql`, en son Flutter scripti
-
 ### "User already exists" hatası
 - Supabase Auth'da kullanıcılar zaten mevcut olabilir
 - Bu durumda script devam eder ve mevcut kullanıcıları atlar
 
 ### "Role not found" hatası
-- `seed-sample-data.sql` scriptini çalıştırdığınızdan emin olun
+- `docs/create-basic-tables.sql` scriptini çalıştırdığınızdan emin olun
 - Roller tablosunda gerekli rollerin olduğunu kontrol edin
 
 ### "Group not found" hatası
-- `seed-sample-data.sql` scriptini çalıştırdığınızdan emin olun
+- `docs/create-basic-tables.sql` scriptini çalıştırdığınızdan emin olun
 - Gruplar tablosunda gerekli grupların olduğunu kontrol edin
 
 ## Notlar
